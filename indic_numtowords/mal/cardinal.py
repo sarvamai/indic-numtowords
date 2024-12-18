@@ -15,21 +15,21 @@ def convert(num):
     final_word_list = []
     word_list = [""]
 
-    if n > 9:
-        #output individually
-        for i in num_str:
-            new_list = direct_dict[i]
-            word_list = combine(word_list, new_list)
-        final_word_list.extend(word_list)
-        return final_word_list
+    # if n > 9:
+    #     #output individually
+    #     for i in num_str:
+    #         new_list = direct_dict[i]
+    #         word_list = combine(word_list, new_list)
+    #     final_word_list.extend(word_list)
+    #     return final_word_list
 
-    if n == 9 or n == 8:
+    if n >= 8:
         #crore case
         temp_num = num_str[:-7]
         if temp_num == '1':
             lis1 = ['ഒരു']
         else:
-            lis1 = direct_dict[temp_num]
+            lis1 = convert(temp_num)
         num_str = num_str[len(temp_num):]
         num_str = num_str.lstrip('0')
         if num_str == '':

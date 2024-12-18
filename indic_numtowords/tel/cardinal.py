@@ -22,7 +22,7 @@ def convert(num):
         final_word_list.extend(word_list)
         return final_word_list
 
-    if n == 9 or n == 8:
+    if n >= 8:
         #crore case
         temp_num = num_str[:-7]
         #Handling 10000000 case
@@ -37,7 +37,7 @@ def convert(num):
                 lis1 = ['ఒక']
                 lis2 = ['కోటి']
             else:
-                lis1 = direct_dict[temp_num]
+                lis1 = convert(temp_num)
                 lis2 = higher_dict[7]
             inter_list = combine(lis1, lis2)
             word_list = combine(word_list, inter_list)

@@ -12,26 +12,26 @@ def convert(num):
     word = []
     hundreds_flag = False
 
-    if n > 9:
-        #output individually
-        for i in num_str:
-            if len(word)==0:
-                for x in range (0, len(direct_dict[i])):
-                    word.append(direct_dict[i][x] + " ")
-            else:
-                new_word = []
-                for x in range (0, len(direct_dict[i])):
-                    for y in range(len(word)):
-                        new_word.append(word[y] + " " + direct_dict[i][x] + " ")
-                word = new_word
-        for y in range(len(word)):
-            word[y] = word[y].strip()
-        return word
+    # if n > 9:
+    #     #output individually
+    #     for i in num_str:
+    #         if len(word)==0:
+    #             for x in range (0, len(direct_dict[i])):
+    #                 word.append(direct_dict[i][x] + " ")
+    #         else:
+    #             new_word = []
+    #             for x in range (0, len(direct_dict[i])):
+    #                 for y in range(len(word)):
+    #                     new_word.append(word[y] + " " + direct_dict[i][x] + " ")
+    #             word = new_word
+    #     for y in range(len(word)):
+    #         word[y] = word[y].strip()
+    #     return word
 
-    if n == 9 or n == 8:
+    if n >= 8:
         #crore case
         temp_num = num_str[:-7]
-        temp_str = direct_dict[temp_num]
+        temp_str = convert(temp_num)
         if len(word) == 0:
             for x in range (0, len(temp_str)):
                 word.append(temp_str[x]+ " " + higher_dict[7] + " ")
