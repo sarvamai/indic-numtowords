@@ -1,0 +1,47 @@
+steps:
+
+- name: python:3.11
+  args:
+    - python
+    - "-c"
+    - "import sys; sys.stdout.write(f'__version__ = \"{sys.argv[1]}\"')"
+    - "${_VERSION}"  # Pass the version as a parameter
+  id: SetVersion
+
+# Step 2: Install dependencies
+- name: python:3.11
+  args:
+    - pip
+    - install
+    - --upgrade
+    - setuptools
+    - wheel
+    - twine  # Install twine explicitly here
+  id: InstallDependencies
+
+# Step 3: Build the package
+- name: python:3.11
+  args:
+    - bash
+    - "-c"
+    - |
+        python setup.py sdist bdist_wheel
+        echo "Build completed successfully"
+  id: BuildPackage
+
+# Step 4: Push the package to Google Artifact Registry
+- name: python:3.9
+  args:
+    - bash
+    - "-c"
+    - |
+        pip install --upgrade setuptools wheel twine && \
+        python -m twine upload --repository-url https://${_LOCATION}-python.pkg.dev/${PROJECT_ID}/sarvam-python-ci/simple/ dist/*
+  id: PublishToArtifactRegistry
+
+substitutions:
+  _VERSION: $VERSION_TAG
+  _LOCATION: europe-west4
+
+options:
+  dynamicSubstitutions: true
