@@ -29,7 +29,7 @@ def convert(num):
         if temp_num == '1':
             lis1 = ['ഒരു']
         else:
-            lis1 = convert(temp_num)
+            lis1 = [str(convert(temp_num))]
         num_str = num_str[len(temp_num):]
         num_str = num_str.lstrip('0')
         if num_str == '':

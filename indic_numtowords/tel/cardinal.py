@@ -37,7 +37,7 @@ def convert(num):
                 lis1 = ['ఒక']
                 lis2 = ['కోటి']
             else:
-                lis1 = convert(temp_num)
+                lis1 = [str(convert(temp_num))]
                 lis2 = higher_dict[7]
             inter_list = combine(lis1, lis2)
             word_list = combine(word_list, inter_list)

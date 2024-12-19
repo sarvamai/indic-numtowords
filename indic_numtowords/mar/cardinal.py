@@ -26,7 +26,7 @@ def convert(num):
     if n >= 8:
         #crore case
         temp_num = num_str[:-7]
-        lis1 = convert(temp_num)
+        lis1 = [str(convert(temp_num))]
         lis2 = higher_dict[7]
         inter_list = combine(lis1, lis2)
         word_list = combine(word_list, inter_list)
