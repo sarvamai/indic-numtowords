@@ -173,9 +173,8 @@ def num2words(number, lang = 'en', variations = False, split=False):
         raise ValueError(f"Language not supported. Please check the language code.")
     
     number_str = str(number)
-    extended = len(number_str) > 9
 
-    if extended or split:
+    if split:
         return " ".join(lang_func_dict[lang](digit)[0] for digit in number)
 
     results = lang_func_dict[lang](number)
