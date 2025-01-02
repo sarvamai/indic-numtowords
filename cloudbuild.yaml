@@ -8,18 +8,8 @@ steps:
     - "${_VERSION}"  # Pass the version as a parameter
   id: SetVersion
 
-# Step 2: Install dependencies
-- name: python:3.11
-  args:
-    - pip
-    - install
-    - --upgrade
-    - setuptools
-    - wheel
-    - twine  # Install twine explicitly here
-  id: InstallDependencies
 
-# Step 3: Build the package
+# Step 2: Build the package
 - name: python:3.11
   args:
     - bash
@@ -29,42 +19,22 @@ steps:
         echo "Build completed successfully"
   id: BuildPackage
 
-# - name: python:3.11
-#   entrypoint: bash
-#   args:
-#     - "-c"
-#     - |
-#       # Generate an OAuth2 access token
-#       gcloud auth application-default print-access-token > /workspace/token
-      
-#       # Create the .pypirc file dynamically
-#       echo "[distutils]" > ~/.pypirc
-#       echo "index-servers = google" >> ~/.pypirc
-#       echo "[google]" >> ~/.pypirc
-#       echo "repository: https://${_LOCATION}-python.pkg.dev/sarvam-gpu-reservation/sarvam-python-ci" >> ~/.pypirc
-#       echo "username: oauth2accesstoken" >> ~/.pypirc
-#       echo "password: $(cat /workspace/token)" >> ~/.pypirc
-
-#       # Use Twine to upload the package
-#       python -m twine upload dist/*
-#   id: PublishToArtifactRegistry
-
+# Step 3: Publish the package
 - name: python:3.9
   args:
     - bash
     - "-c"
     - |
-        pip install --upgrade setuptools wheel twine && \
+        pip install --upgrade setuptools wheel twine keyrings.google-artifactregistry-auth && \
         python -m twine upload \
         --verbose \
         --repository-url https://${_LOCATION}-python.pkg.dev/gpu-reservation-sarvam/sarvam-python-ci/ \
-        --username oauth2accesstoken \
-        --password "$_TOKEN" \
         dist/*
   id: PublishToArtifactRegistry
 
 substitutions:
   _LOCATION: europe-west4
+  _VERSION: $TAG_NAME
 
 options:
   dynamicSubstitutions: true
