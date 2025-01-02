@@ -1,12 +1,20 @@
 from setuptools import find_packages, setup
+import sys
 
 with open('README.md', encoding="utf-8") as f:
     long_description = f.read()
 
+version='1.0.2.1'
+
+for arg in sys.argv:
+    if arg.startswith('--version='):
+        version = arg.split('=')[1]
+        sys.argv.remove(arg)  # Remove the argument to avoid issues with setup()
+
 # This call to setup() does all the work
 setup(
     name="sarvam_indic_numtowords",
-    version='1.0.2.1',
+    version=version,
     description="A module to convert numbers to words for Indian languages and English.",
     long_description=long_description,
     long_description_content_type="text/markdown",

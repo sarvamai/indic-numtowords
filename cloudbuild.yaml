@@ -15,7 +15,7 @@ steps:
     - bash
     - "-c"
     - |
-        python setup.py sdist bdist_wheel
+        python setup.py sdist bdist_wheel --version=${_VERSION}
         echo "Build completed successfully"
   id: BuildPackage
 
