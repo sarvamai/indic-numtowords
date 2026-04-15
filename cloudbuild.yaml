@@ -40,3 +40,4 @@ substitutions:
 
 options:
   dynamicSubstitutions: true
+  logging: CLOUD_LOGGING_ONLY
