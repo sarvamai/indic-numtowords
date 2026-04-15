@@ -1,5 +1,6 @@
 import re
 import csv
+import unicodedata
 
 from indic_numtowords.asm.cardinal import convert as as_convert
 from indic_numtowords.ben.cardinal import convert as bn_convert
@@ -160,9 +161,15 @@ process_text_mapping = {
     'sa': sa_process_text
 }
 
+def _normalize_to_ascii_digits(s: str) -> str:
+    return ''.join(
+        str(unicodedata.digit(c)) if unicodedata.category(c) == 'Nd' else c
+        for c in s
+    )
+
 def num2words(number, lang = 'en', variations = False, split=False):
     if isinstance(number, str):
-        number = number.strip().replace(',', '')
+        number = _normalize_to_ascii_digits(number.strip().replace(',', ''))
         if not number.isdigit():
             raise ValueError("Input string must be a valid number")
     
