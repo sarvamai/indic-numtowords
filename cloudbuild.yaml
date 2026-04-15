@@ -1,40 +1,43 @@
+# https://binx.io/2021/02/28/the-simplest-and-most-generic-google-cloud-build-yaml-config-file-ever/
+
 steps:
-
-- name: python:3.11
+- name: '${_BUILD_IMAGE_PATH}'
   args:
-    - python
-    - "-c"
-    - "import sys; sys.stdout.write(f'__version__ = \"{sys.argv[1]}\"')"
-    - "${_VERSION}"  # Pass the version as a parameter
+    - "-m"
+    - "poetry"
+    - "version"
+    - "$_VERSION"
   id: SetVersion
-
-
-# Step 2: Build the package
-- name: python:3.11
+- name: '${_BUILD_IMAGE_PATH}'
   args:
-    - bash
-    - "-c"
-    - |
-        python setup.py sdist bdist_wheel --version=${_VERSION}
-        echo "Build completed successfully"
-  id: BuildPackage
-
-# Step 3: Publish the package
-- name: python:3.9
+    - "-m"
+    - "poetry"
+    - "install"
+  id: Install
+# - name: 'asia-south1-docker.pkg.dev/${PROJECT_ID}/sarvam-docker-ci/python-ci'
+#   args:
+#     - "-m"
+#     - "poetry"
+#     - "run"
+#     - "test"
+#   id: Test
+- name: '${_BUILD_IMAGE_PATH}'
   args:
-    - bash
-    - "-c"
-    - |
-        pip install --upgrade setuptools wheel twine keyrings.google-artifactregistry-auth && \
-        python -m twine upload \
-        --verbose \
-        --repository-url https://${_LOCATION}-python.pkg.dev/gpu-reservation-sarvam/sarvam-python-ci/ \
-        dist/*
-  id: PublishToArtifactRegistry
+    - "-m"
+    - "poetry"
+    - "publish"
+    - "--build"
+    - "-r"
+    - "google"
+  id: PackageAndPublish
 
 substitutions:
-  _LOCATION: europe-west4
+  _LOCATION: 'europe-west4'
+  _DOCKER_REGISTRY_NAME: 'sarvam-docker-ci'
+  _BUILD_IMAGE_NAME: 'python-ci'
+  _BUILD_IMAGE_PATH: '${_LOCATION}-docker.pkg.dev/${PROJECT_ID}/${_DOCKER_REGISTRY_NAME}/${_BUILD_IMAGE_NAME}'
   _VERSION: $TAG_NAME
 
 options:
   dynamicSubstitutions: true
+  logging: CLOUD_LOGGING_ONLY

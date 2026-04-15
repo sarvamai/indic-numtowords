@@ -1,0 +1,20 @@
+[tool.poetry]
+name = "sarvam-indic-numtowords"
+version = "0.0.1"
+description = "A module to convert numbers to words for Indian languages and English."
+authors = ["AI4Bhārat <opensource@ai4bharat.org>"]
+readme = "README.md"
+license = "MIT"
+packages = [{ include = "indic_numtowords" }]
+
+[tool.poetry.dependencies]
+python = ">=3.9,<4.0"
+
+[[tool.poetry.source]]
+name = "google"
+url = "https://europe-west4-python.pkg.dev/gpu-reservation-sarvam/sarvam-python-ci/"
+priority = "primary"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
