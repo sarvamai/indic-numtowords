@@ -35,6 +35,16 @@ def test_gujarati_variations():
     assert "એક હજાર દોઢસો" in gu_convert(1150)
 
 
+def test_gujarati_joined_hundreds():
+    # written Gujarati joins the hundreds ("એકસો", "ત્રણસો"); offered alongside the spaced default
+    assert "એકસો પચ્ચીસ" in num2words(125, lang="gu", variations=True)
+    assert "એકસો પચાસ" in num2words(150, lang="gu", variations=True)
+    assert "ત્રણસો પચાસ" in num2words(350, lang="gu", variations=True)
+    assert "સાડા ત્રણસો" in num2words(350, lang="gu", variations=True)
+    assert "એક હજાર એકસો પચાસ" in num2words(1150, lang="gu", variations=True)
+    assert {"એક સો", "એકસો", "સો"} <= set(num2words(100, lang="gu", variations=True))
+
+
 def test_gujarati_default_output_unchanged():
     # variations only add alternatives; the first (default) reading stays the plain cardinal
     assert num2words(150, lang="gu") == "એક સો પચાસ"
