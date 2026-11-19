@@ -2,6 +2,7 @@ from indic_numtowords.guj.data.nums import exceptions_dict
 from indic_numtowords.guj.data.nums import direct_dict
 from indic_numtowords.guj.data.nums import higher_dict
 from indic_numtowords.guj.data.nums import hundreds_dict
+from indic_numtowords.guj.data.nums import variations_dict
 
 from indic_numtowords.guj.utils import combine
 
@@ -66,6 +67,8 @@ def convert(num):
             lis2 = higher_dict[2]
             inter_list = combine(lis1, lis2)
 
+        if num_str in variations_dict:
+            final_word_list.extend(combine(word_list, variations_dict[num_str]))
         word_list = combine(word_list, inter_list)
         num_str = num_str[1:]
         num_str = num_str.lstrip('0')
